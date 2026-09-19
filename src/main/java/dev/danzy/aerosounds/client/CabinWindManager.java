@@ -42,7 +42,7 @@ public final class CabinWindManager {
 
     public static void clear() {
         if (loop != null) {
-            loop.stop();
+            loop.stopNow();
             loop = null;
         }
     }
@@ -63,6 +63,11 @@ public final class CabinWindManager {
             this.x = 0;
             this.y = 0;
             this.z = 0;
+        }
+
+        /** Public wrapper: {@link #stop()} is protected in the vanilla base class. */
+        public void stopNow() {
+            stop();
         }
 
         @Override

@@ -63,7 +63,7 @@ public final class WindManager {
     }
 
     public static void clear() {
-        ACTIVE.values().forEach(TrackedLoopInstance::stop);
+        ACTIVE.values().forEach(TrackedLoopInstance::stopNow);
         ACTIVE.clear();
     }
 

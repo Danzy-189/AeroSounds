@@ -60,6 +60,11 @@ public class TrackedLoopInstance extends AbstractTickableSoundInstance {
         return layer;
     }
 
+    /** Public wrapper: {@link #stop()} is protected in the vanilla base class. */
+    public void stopNow() {
+        stop();
+    }
+
     @Override
     public void tick() {
         Minecraft mc = Minecraft.getInstance();
