@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    // https://projects.neoforged.net/neoforged/moddevgradle
+    id 'net.neoforged.moddev' version '2.0.140'
+}
+
+version = "${mod_version}+mc${minecraft_version}"
+group = mod_group
+base { archivesName = mod_id }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(java_version as int)
+
+neoForge {
+    version = neoforge_version
+
+    parchment {
+        minecraftVersion = '1.21.1'
+        mappingsVersion = '2024.11.17'
+    }
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
+        data {
+            clientData()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.neoforged.net/releases' }
+}
+
+dependencies {
+    // Aero Sounds is fully client-side and standalone: it detects physics
+    // contraptions by registry namespace, so no compile dependency on
+    // Create / Create: Aeronautics (Simulated) / Sable is required.
+}
+
+// The .ogg samples are synthesized from their physical description instead of
+// being committed as binaries. The task is skipped when they already exist.
+var generateSounds = tasks.register("generateSounds", Exec) {
+    def outDir = file("src/main/resources/assets/aerosounds/sounds")
+    def names = ["wind_light", "wind_heavy", "wind_cabin", "whoosh_pass",
+                 "transonic_rumble", "sonic_boom_near", "sonic_boom_far"]
+    outputs.dir(outDir)
+    onlyIf { !names.every { new File(outDir, "${it}.ogg").exists() } }
+    commandLine "python3", file("tools/generate_sounds.py").absolutePath
+}
+
+tasks.named("processResources").configure { dependsOn generateSounds }
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version           : minecraft_version,
+            minecraft_version_range     : minecraft_version_range,
+            neoforge_version            : neoforge_version,
+            neoforge_loader_version_range: neoforge_loader_version_range,
+            mod_id                      : mod_id,
+            mod_name                    : mod_name,
+            mod_license                 : mod_license,
+            mod_version                 : mod_version,
+            mod_authors                 : mod_authors
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = java_version as int
+}

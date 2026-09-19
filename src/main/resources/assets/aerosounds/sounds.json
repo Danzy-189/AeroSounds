@@ -1,0 +1,37 @@
+{
+  "wind_light": {
+    "category": "ambient",
+    "subtitle": "subtitles.aerosounds.wind",
+    "sounds": [{ "name": "aerosounds:wind_light", "stream": false }]
+  },
+  "wind_heavy": {
+    "category": "ambient",
+    "subtitle": "subtitles.aerosounds.wind_heavy",
+    "sounds": [{ "name": "aerosounds:wind_heavy", "stream": false }]
+  },
+  "wind_cabin": {
+    "category": "ambient",
+    "subtitle": "subtitles.aerosounds.wind_cabin",
+    "sounds": [{ "name": "aerosounds:wind_cabin", "stream": false }]
+  },
+  "whoosh_pass": {
+    "category": "ambient",
+    "subtitle": "subtitles.aerosounds.whoosh",
+    "sounds": [{ "name": "aerosounds:whoosh_pass", "stream": false }]
+  },
+  "transonic_rumble": {
+    "category": "ambient",
+    "subtitle": "subtitles.aerosounds.transonic",
+    "sounds": [{ "name": "aerosounds:transonic_rumble", "stream": false }]
+  },
+  "sonic_boom_near": {
+    "category": "ambient",
+    "subtitle": "subtitles.aerosounds.sonic_boom",
+    "sounds": [{ "name": "aerosounds:sonic_boom_near", "stream": false }]
+  },
+  "sonic_boom_far": {
+    "category": "ambient",
+    "subtitle": "subtitles.aerosounds.sonic_boom_distant",
+    "sounds": [{ "name": "aerosounds:sonic_boom_far", "stream": false }]
+  }
+}
